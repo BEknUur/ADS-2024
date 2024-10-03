@@ -5,58 +5,64 @@ struct Node {
     int key;
     Node* left;
     Node* right;
+  
     Node(int item) {
         key = item;
         left = right = nullptr;
     }
 };
 
-Node* insert(Node* root, int key) {
-    if (root == nullptr) {
+Node* insert(Node* node,int key){
+    if(node==nullptr){
         return new Node(key);
     }
-    if (key < root->key) {
-        root->left = insert(root->left, key);
-    } else {
-        root->right = insert(root->right, key);
+    else if(node->key>key){
+        node->left=insert(node->left,key);
     }
-    return root;
+    else  if (node->key<key){
+        node->right=insert(node->right,key);
+    }
+    return node;
 }
-
-Node* search(Node* root, int key) {
-    if (root == nullptr || root->key == key) {
-        return root;
-    }
-    if (key < root->key) {
-        return search(root->left, key);
-    }
-    return search(root->right, key);
-}
-
-int count(Node* root) {
-    if (root == nullptr) {
+int size(Node* root){
+    if(root==nullptr){
         return 0;
     }
-    return 1 + count(root->left) + count(root->right);
-}
-
-int main() {
-    int n;
-    cin >> n;
-    Node* root = nullptr;
-    for (int i = 0; i < n; i++) {
-        int a;
-        cin >> a;
-        root = insert(root, a);
+    else{
+        return 1+size(root->left)+size(root->right);
     }
 
-    int b;
-    cin >> b;
-    Node* bNode = search(root, b);
-    if (bNode != nullptr) {
-        int sub = count(bNode);
-        cout << sub << endl;
-    } 
+}
+Node* find(Node* root,int key){
+    if(root==nullptr||root->key==key){
+        return root;
+    }
+    if(root->key>key){
+        return find(root->left,key);
+    }
+    return find(root->right,key);
+};
+int main(){
+    Node* root=nullptr;
+    int n,k;
+    cin>>n;
+    vector<int>sandar(n);
+    vector<string>sozder(k);
+    for(int i=0;i<n;i++){
+        cin>>sandar[i];
+       root= insert( root,sandar[i]);
+    }
+    cin>>k;
+    Node* target=find(root,k);
 
+    if(target!=nullptr){
+        cout<<size(target);
+    }
+    else{
+        cout<<0;
+    }
     return 0;
+    
+
+  
 }
